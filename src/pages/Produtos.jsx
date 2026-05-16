@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { ThemeToggle } from '../components/ThemeToggle';
 export function Produtos() {
   const [produtos, setProdutos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
+  const navigate = useNavigate();
   useEffect(() => {
     const buscaProdutos = async () => {
       try { 
@@ -26,6 +28,7 @@ export function Produtos() {
         + Novo Produto
       </button>
        <h2>Meus Produtos</h2>
+       <ThemeToggle />
         <button onClick={() => {
             localStorage.removeItem('token');
             window.location.href = '/login';

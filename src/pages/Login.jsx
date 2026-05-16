@@ -1,71 +1,77 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-
+import { ThemeToggle } from '../components/ThemeToggle';
+import './Login.css'; 
+/**
+ * Componente responsável pela tela de acesso ao sistema.
+ * Gerencia a captura das credenciais do usuário, envia para a API do Django
+ * e salva o Token de segurança no navegador (localStorage).
+ * * @returns {JSX.Element} O formulário de login renderizado
+ */
 export function Login() {
-  // 1. O ESTADO: Aqui nós guardamos o que o usuário digita, em tempo real.
-  const [usuario, setUsuario] = useState('');
-  const [senha, setSenha] = useState('');
+  const [credenciais, setCredenciais] = useState({ username: '', password: '' });
   const [erro, setErro] = useState('');
-  
-  // O useNavigate é o nosso "motorista". Ele nos leva para outras telas.
+  const [carregando, setCarregando] = useState(false); 
   const navigate = useNavigate();
-
-  // 2. A AÇÃO: O que acontece quando o botão "Entrar" é clicado
+  /**
+   * Atualiza o estado unificado do formulário a cada tecla digitada.
+   * Utiliza a propriedade 'name' do input para identificar qual campo alterar.
+   * * @param {Object} e - O evento de mudança (onChange) disparado pelo input
+   */
+  const lidarComMudanca = (e) => {
+    const { name, value } = e.target;
+    setCredenciais((estadoAnterior) => ({ ...estadoAnterior, [name]: value }));
+  };
+  /**
+   * Dispara a requisição de autenticação para o servidor.
+   * Em caso de sucesso, redireciona para a rota /produtos.
+   * * @param {Object} e - O evento de submissão (onSubmit) do formulário
+   */
   const fazerLogin = async (e) => {
-    e.preventDefault(); // Impede a página de recarregar (padrão do HTML antigo)
-    setErro(''); // Limpa mensagens de erro antigas
-
+    e.preventDefault();
+    setErro('');
+    setCarregando(true);
     try {
-      // O Axios envia o JSON para a sua URL de login do Django
-      // ATENÇÃO: Confirme se a sua URL de login no urls.py é 'login/' mesmo.
-      const resposta = await api.post('login/', { 
-        username: usuario, 
-        password: senha 
-      });
-
-      // 3. O SUCESSO: O Django devolveu o Token!
-      const token = resposta.data.token;
-      
-      // Guardamos o Token na "gaveta" do navegador
-      localStorage.setItem('token', token);
-
-      // O motorista nos leva para a tela de Produtos instantaneamente
+      const resposta = await api.post('login/', credenciais);
+      localStorage.setItem('token', resposta.data.token);
       navigate('/produtos');
-
     } catch (error) {
-      // 4. A FALHA: O Django barrou (Senha errada ou usuário não existe)
-      console.error(error);
-      setErro('Usuário ou senha incorretos. Tente novamente.');
+      console.error('Falha na autenticação:', error);
+      const mensagemBackend = error.response?.data?.detail;
+      setErro(mensagemBackend || 'Usuário ou senha incorretos. Tente novamente.');
+    } finally {
+      setCarregando(false); 
     }
   };
 
-  // 5. O VISUAL (JSX)
   return (
-    <div style={{ padding: '20px', maxWidth: '300px', margin: '0 auto' }}>
+    <div className="login-container">
+      <ThemeToggle />
       <h2>Acesso ao Sistema</h2>
-      
-      <form onSubmit={fazerLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <form onSubmit={fazerLogin} className="login-form">
         <input
           type="text"
+          name="username"
           placeholder="Nome de Usuário"
-          value={usuario}
-          onChange={(e) => setUsuario(e.target.value)} // Atualiza o estado a cada letra digitada
+          value={credenciais.username}
+          onChange={lidarComMudanca}
+          disabled={carregando}
           required
         />
-        
         <input
           type="password"
+          name="password"
           placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
+          value={credenciais.password}
+          onChange={lidarComMudanca}
+          disabled={carregando}
           required
         />
-        
-        {/* Se a variável 'erro' tiver algum texto, ele desenha esse aviso vermelho */}
-        {erro && <p style={{ color: 'red', fontSize: '14px' }}>{erro}</p>}
-        
-        <button type="submit">Entrar</button>
+        {erro && <p className="mensagem-erro">{erro}</p>}
+        <button type="submit" disabled={carregando}>
+          {carregando ? 'Entrando...' : 'Entrar'}
+        </button>
       </form>
     </div>
   );

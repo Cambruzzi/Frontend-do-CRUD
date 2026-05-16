@@ -3,62 +3,72 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 export function CadastroProduto() {
-  const [nome, setNome] = useState('');
-  const [codigo, setCodigo] = useState('');
-  const [valor, setValor] = useState('');
+  // 1. ESTADO UNIFICADO: Um único objeto para todo o formulário
+  const [formData, setFormData] = useState({
+    nome: '',
+    codigo: '',
+    valor: '',
+    imagem: null
+  });
   const [erro, setErro] = useState('');
-  
   const navigate = useNavigate();
 
+  // 2. FUNÇÃO INTELIGENTE: Atualiza qualquer campo do formulário dinamicamente
+  const lidarComMudanca = (e) => {
+    // Extrai o 'name' (qual input está sendo digitado) e o 'value' (o que foi digitado)
+    const { name, value } = e.target;
+    
+    setFormData((estadoAnterior) => ({
+      ...estadoAnterior, // Mantém os dados dos outros campos
+      [name]: value      // Atualiza apenas o campo que está sendo digitado
+    }));
+  };
+
   const salvarProduto = async (e) => {
-    e.preventDefault(); // Impede a tela de piscar
+    e.preventDefault();
     setErro('');
 
     try {
-      // O Axios envia o POST com os dados no formato JSON exato que o Django espera
-      await api.post('produtos/', {
-        nome: nome,
-        codigo: codigo,
-        valor: parseFloat(valor) // Garante que o valor seja enviado como número (decimal)
+      await api.post('v1/produtos/', {
+        nome: formData.nome,
+        codigo: formData.codigo,
+        valor: parseFloat(formData.valor)
       });
-
-      // Se deu tudo certo, volta para a tela de lista de produtos automaticamente
       navigate('/produtos');
     } catch (error) {
       console.error(error);
-      setErro('Erro ao salvar o produto. Verifique os dados e tente novamente.');
+      setErro('Erro ao salvar o produto.');
     }
   };
+
+  // 3. CONFIGURAÇÃO DOS CAMPOS: Uma lista simples
+  const camposDoFormulario = [
+    { name: 'nome', type: 'text', placeholder: 'Nome do Produto', accept: '' ,required: true, step: ''},
+    { name: 'codigo', type: 'text', placeholder: 'Código', accept: '', step: '', required: false  },
+    { name: 'imagem', type: 'file', placeholder: 'URL da Imagem', accept: 'image/*', step: '', required: false },
+    { name: 'valor', type: 'number', placeholder: 'Valor (R$)', accept: '',step: '0.01', required: true }
+  ];
 
   return (
     <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
       <h2>Novo Produto</h2>
       
       <form onSubmit={salvarProduto} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <input
-          type="text"
-          placeholder="Nome do Produto"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
         
-        <input
-          type="text"
-          placeholder="Código"
-          value={codigo}
-          onChange={(e) => setCodigo(e.target.value)}
-          required
-        />
-        
-        <input
-          type="number"
-          step="0.01" // Permite centavos
-          placeholder="Valor (R$)"
-          value={valor}
-          onChange={(e) => setValor(e.target.value)}
-          required
-        />
+        {/* 4. O MAP: Desenha todos os inputs de uma vez */}
+        {camposDoFormulario.map((campo) => (
+          <input
+            key={campo.name} // O React exige uma chave única no map
+            name={campo.name}
+            type={campo.type}
+            step={campo.step}
+            placeholder={campo.placeholder}
+            value={formData[campo.name]} // Pega o valor correspondente no objeto unificado
+            onChange={lidarComMudanca}   // Usa a mesma função para todos
+            required ={campo.required}
+            accept={campo.accept}
+          />
+        ))}
 
         {erro && <p style={{ color: 'red' }}>{erro}</p>}
         
@@ -66,7 +76,6 @@ export function CadastroProduto() {
           <button type="submit" style={{ flex: 1, backgroundColor: '#55CC70', color: 'white', border: 'none', padding: '10px' }}>
             Salvar
           </button>
-          {/* Botão para cancelar e voltar */}
           <button type="button" onClick={() => navigate('/produtos')} style={{ flex: 1, padding: '10px' }}>
             Cancelar
           </button>
