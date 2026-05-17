@@ -1,0 +1,136 @@
+.produtos-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+.app-container {
+  min-height: 100vh; 
+  background-color: var(--bg-principal);
+  color: var(--texto-branco); 
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.produtos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--input-bg);
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+}
+
+.produtos-header h2 {
+  color: var(--texto-branco);
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.header-acoes {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-novo-produto {
+  background-color: var(--verde-neon);
+  color: var(--bg-principal); 
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-novo-produto:hover {
+  background-color: var(--verde-hover);
+  transform: translateY(-1px);
+}
+
+.btn-sair {
+  background-color: transparent;
+  color: var(--texto-secundario);
+  border: 1px solid var(--texto-secundario);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sair:hover {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+}
+
+.produtos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.produto-card {
+  background-color: var(--bg-card);
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-left: 4px solid var(--verde-neon); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.produto-card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.produto-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.produto-nome {
+  color: var(--texto-branco);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.produto-codigo {
+  color: var(--texto-secundario);
+  background-color: var(--input-bg);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  width: fit-content;
+  font-weight: 500;
+}
+
+.produto-preco-wrapper {
+  text-align: right;
+}
+
+.produto-preco {
+  color: var(--verde-neon);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 5. MENSAGENS DE STATUS */
+.status-mensagem {
+  color: var(--texto-secundario);
+  text-align: center;
+  margin-top: 40px;
+  font-size: 16px;
+}
+
+.mensagem-erro {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  padding: 15px;
+  border-radius: 6px;
+  text-align: center;
+  margin-top: 20px;
+}
