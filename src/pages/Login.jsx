@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { ThemeToggle } from '../components/ThemeToggle';
 import './Login.css'; 
@@ -72,6 +72,14 @@ export function Login() {
         <button type="submit" disabled={carregando}>
           {carregando ? 'Entrando...' : 'Entrar'}
         </button>
+        <div style={{ textAlign: 'center', marginTop: '15px' }}>
+          <span style={{ color: 'var(--texto-secundario)', fontSize: '14px' }}>
+            Ainda não tem acesso?{' '}
+          </span>
+          <Link to="/cadastro" style={{ color: 'var(--verde-neon)', textDecoration: 'none', fontWeight: 'bold' }}>
+            Cadastre-se
+          </Link>
+        </div>
       </form>
     </div>
   );
