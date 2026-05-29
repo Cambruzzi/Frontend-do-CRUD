@@ -13,8 +13,9 @@ function LayoutConfigurado() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<CadastroUsuario />} />
-        <Route path="/produtos" element={<Produtos />} />
+        <Route path="/editar-produto/:id" element={<CadastroProduto />} />
         <Route path="/novo-produto" element={<CadastroProduto />} />
+        <Route path="/produtos" element={<Produtos />} />
       </Routes>
     </div>
   );

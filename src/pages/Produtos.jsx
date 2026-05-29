@@ -75,12 +75,18 @@ export function Produtos() {
               <strong className="produto-nome">{produto.nome}</strong>
               <span className="produto-codigo">Código: {produto.codigo}</span>
             </div>
-            
-            <div className="produto-preco-wrapper">
+            <div className="produto-acoes" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
               <strong className="produto-preco">
                 R$ {produto.valor}
               </strong>
-            </div>
+              <button 
+                onClick={() => navigate(`/editar-produto/${produto.id}`, { state: { produtoNaMala: produto } })}
+                style={{ background: 'transparent', border: '1px solid var(--verde-neon)', color: 'var(--verde-neon)', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                ✏️ Editar
+              </button>
+      </div>
+ 
           </div>
         ))}
       </div>

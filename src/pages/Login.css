@@ -129,3 +129,24 @@
   background-color: var(--verde-neon);
   color: var(--bg-principal);
 }
+
+.form-acoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-primario {
+  flex: 1;
+}
+
+.btn-secundario {
+  flex: 1;
+  background-color: transparent;
+  border: 1px solid var(--texto-secundario);
+  color: var(--texto-secundario);
+}
+
+.btn-secundario:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Um efeito sutil no hover */
+}
