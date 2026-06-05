@@ -35,6 +35,18 @@ export function Produtos() {
     buscaProdutos();
   }, []);
 
+  const deletarProduto = async (id, nome) => {
+    const confirmacao = window.confirm(`Tem certeza que deseja excluir o produto "${nome}"? Esta ação não pode ser desfeita.`);
+    if (!confirmacao) return; 
+    try {
+      await api.delete(`v1/produtos/${id}/`);
+      setProdutos((listaAtual) => listaAtual.filter((produto) => produto.id !== id));
+    } catch (error) {
+      console.error('Erro ao deletar produto:', error);
+      alert('Ocorreu um erro ao tentar excluir o produto. Tente novamente.');
+    }
+  };
+
   return (
     <div className="produtos-container">
       <header className="produtos-header">
@@ -85,7 +97,14 @@ export function Produtos() {
               >
                 ✏️ Editar
               </button>
-      </div>
+              <button 
+                onClick={() => deletarProduto(produto.id, produto.nome)}
+                aria-label={`Excluir ${produto.nome}`}
+                style={{ background: 'transparent', border: '1px solid var(--vermelho-erro)', color: 'var(--vermelho-erro)', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                🗑️ Excluir
+              </button> 
+            </div>
  
           </div>
         ))}
