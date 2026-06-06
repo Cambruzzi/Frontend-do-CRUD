@@ -47,7 +47,7 @@ Certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
 Clone o repositório e acesse a pasta do projeto:
 ```bash
 git clone [https://github.com/Cambruzzi/Frontend-do-CRUD](https://github.com/Cambruzzi/Frontend-do-CRUD)
-cd seu-repositorio-frontend
+cd Frontend-do-CRUD
 ```
 Instale as dependências:
 ```bash
