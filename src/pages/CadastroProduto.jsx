@@ -14,6 +14,7 @@ const CAMPOS_FORMULARIO = [
   { name: 'codigo', type: 'text', placeholder: 'Código' },
   { name: 'valor', type: 'number', placeholder: 'Valor (R$)', step: '0.01' }
 ];
+const URL_BACKEND = 'https://leocambruzzi.pythonanywhere.com';
 
 /**
  * Componente híbrido de formulário de Produto.
@@ -29,6 +30,8 @@ export function CadastroProduto() {
   const [formData, setFormData] = useState({ nome: '', codigo: '', valor: '' });
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
+  const [imagemArquivo, setImagemArquivo] = useState(null); 
+  const [imagemPreview, setImagemPreview] = useState('');
 
   // 1. GESTÃO DE CICLO DE VIDA E DADOS
   useEffect(() => {
@@ -45,8 +48,10 @@ export function CadastroProduto() {
           codigo: produtoDaLista.codigo,
           valor: produtoDaLista.valor
         });
-        sessionStorage.setItem(`produto_${id}`, JSON.stringify(produtoDaLista));
-        return; // Early return: interrompe a execução aqui, não precisa do "else"
+      if (produtoDaLista.imagem) {
+        setImagemPreview(produtoDaLista.imagem);}
+      sessionStorage.setItem(`produto_${id}`, JSON.stringify(produtoDaLista));
+      return;
       }
 
       // Cenário B: Usuário deu F5 (Procura no cofre de segurança)
@@ -77,6 +82,13 @@ export function CadastroProduto() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+  const lidarComImagem = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagemArquivo(file);
+      setImagemPreview(URL.createObjectURL(file)); 
+    }
+  };
 
   const salvarProduto = async (e) => {
     e.preventDefault();
@@ -84,11 +96,13 @@ export function CadastroProduto() {
     setCarregando(true);
 
     // Isola a montagem do "pacote" (Payload) para não repetir código
-    const payload = {
-      nome: formData.nome,
-      codigo: formData.codigo,
-      valor: parseFloat(formData.valor)
-    };
+    const payload = new FormData();
+    payload.append('nome', formData.nome);
+    payload.append('codigo', formData.codigo);
+    payload.append('valor', formData.valor);
+    if (imagemArquivo) {
+      payload.append('imagem', imagemArquivo);
+    }
 
     try {
       if (modoEdicao) {
@@ -105,6 +119,13 @@ export function CadastroProduto() {
       setCarregando(false);
     }
   };
+  const obterCaminhoPreview = () => {
+    if (!imagemPreview) return null;
+    // Se a imagem for local (recém-escolhida), ela começa com 'blob:'
+    if (imagemPreview.startsWith('blob:')) return imagemPreview;
+    // Se a imagem veio do banco de dados, juntamos com a porta do Django
+    return `${URL_BACKEND}${imagemPreview}`;
+  };
 
   // 3. RENDERIZAÇÃO DA INTERFACE
   return (
@@ -114,6 +135,27 @@ export function CadastroProduto() {
       <h2>{modoEdicao ? 'Editar Produto' : 'Novo Produto'}</h2>
       
       <form onSubmit={salvarProduto} className="login-form">
+
+        <div className="upload-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          {imagemPreview ? (
+            <img 
+              src={obterCaminhoPreview()} 
+              alt="Preview do Produto" 
+              style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--texto-secundario)' }}
+            />
+          ) : (
+            <div style={{ width: '100px', height: '100px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px dashed var(--texto-secundario)' }}>
+              📦
+            </div>
+          )}
+          
+          <input 
+            type="file" 
+            accept="image/*" 
+            onChange={lidarComImagem}
+            style={{ fontSize: '14px', width: '100%' }}
+          />
+        </div>
         
         {CAMPOS_FORMULARIO.map((campo) => (
           <input

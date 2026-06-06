@@ -134,3 +134,33 @@
   text-align: center;
   margin-top: 20px;
 }
+
+/* Estrutura flexível para alinhar a imagem ao lado do texto */
+.produto-card {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaço entre a imagem e as informações */
+  /* Mantenha as suas outras propriedades de borda, padding, etc... */
+}
+
+/* O Estilo da Imagem Real */
+.produto-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover; /* Mágica: corta a imagem sem achatar! */
+  border-radius: 8px;
+  border: 1px solid var(--texto-secundario);
+}
+
+/* O Estilo do Plano B (Produto sem imagem) */
+.produto-imagem-placeholder {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.05); /* Fundo sutil */
+  border: 1px dashed var(--texto-secundario);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}

@@ -15,6 +15,7 @@ export function Produtos() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
+  const URL_BACKEND = 'https://leocambruzzi.pythonanywhere.com/';
 
   useEffect(() => {
     /**
@@ -83,6 +84,19 @@ export function Produtos() {
       <div className="produtos-grid">
         {produtos.map((produto) => (
           <div key={produto.id} className="produto-card">
+            <div className="produto-imagem-container">
+                  {produto.imagem ? (
+                    <img 
+                      src={`${URL_BACKEND}${produto.imagem}`}
+                      alt={`Foto do produto ${produto.nome}`} 
+                      className="produto-thumbnail"
+                    />
+                  ) : (
+                    <div className="produto-imagem-placeholder" title="Sem imagem">
+                      📦
+                    </div>
+                  )}
+              </div>
             <div className="produto-info">
               <strong className="produto-nome">{produto.nome}</strong>
               <span className="produto-codigo">Código: {produto.codigo}</span>

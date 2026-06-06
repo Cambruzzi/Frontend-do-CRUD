@@ -36,6 +36,7 @@ describe('Tela de Cadastro/Edição de Produto', () => {
     sessionStorage.clear(); // Limpa o cofre do navegador antes de cada cenário
     mockParams = {};        // Reseta para o modo "Novo Produto" por padrão
     mockLocationState = null;
+    window.URL.createObjectURL = vi.fn().mockReturnValue('blob:http://localhost:5173/imagem-falsa');
   });
 
   // --- CENÁRIO 1: MODO CRIAÇÃO (POST) ---
@@ -51,6 +52,8 @@ describe('Tela de Cadastro/Edição de Produto', () => {
         </BrowserRouter>
       </ThemeProvider>
     );
+    const arquivoFoto = new File(['(⌐□_□)'], 'teclado-lindo.png', { type: 'image/png' });
+    const inputImagem = document.querySelector('input[type="file"]');
 
     // Assert
     expect(screen.getByRole('heading', { name: 'Novo Produto' })).toBeInTheDocument();
@@ -59,15 +62,17 @@ describe('Tela de Cadastro/Edição de Produto', () => {
     await usuario.type(screen.getByPlaceholderText('Nome do Produto'), 'Teclado Mecânico');
     await usuario.type(screen.getByPlaceholderText('Código'), 'TEC-001');
     await usuario.type(screen.getByPlaceholderText('Valor (R$)'), '350.50');
+    await usuario.upload(inputImagem, arquivoFoto);
     await usuario.click(screen.getByRole('button', { name: /salvar/i }));
 
     // Assert
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('v1/produtos/', {
-        nome: 'Teclado Mecânico',
-        codigo: 'TEC-001',
-        valor: 350.50
-      });
+      expect(api.post).toHaveBeenCalledWith('v1/produtos/', expect.any(FormData));
+      const formDataEnviado = api.post.mock.calls[0][1];
+      expect(formDataEnviado.get('nome')).toBe('Teclado Mecânico');
+      expect(formDataEnviado.get('codigo')).toBe('TEC-001');
+      expect(formDataEnviado.get('valor')).toBe('350.5');
+      expect(formDataEnviado.get('imagem').name).toBe('teclado-lindo.png');
       expect(mockNavigate).toHaveBeenCalledWith('/produtos');
     });
   });
@@ -91,6 +96,9 @@ describe('Tela de Cadastro/Edição de Produto', () => {
       </ThemeProvider>
     );
 
+    const arquivoFoto = new File(['(⌐□_□)'], 'teclado-lindo.png', { type: 'image/png' });
+    const inputImagem = document.querySelector('input[type="file"]');
+
     // Assert
     expect(screen.getByRole('heading', { name: 'Editar Produto' })).toBeInTheDocument();
     expect(screen.getByDisplayValue('Mouse Gamer')).toBeInTheDocument();
@@ -99,16 +107,17 @@ describe('Tela de Cadastro/Edição de Produto', () => {
     const inputValor = screen.getByPlaceholderText('Valor (R$)');
     await usuario.clear(inputValor);
     await usuario.type(inputValor, '180.00');
-    
+    await usuario.upload(inputImagem, arquivoFoto);
     await usuario.click(screen.getByRole('button', { name: /salvar/i }));
 
     // Assert
     await waitFor(() => {
-      expect(api.put).toHaveBeenCalledWith('v1/produtos/99/', {
-        nome: 'Mouse Gamer', // Manteve o nome original
-        codigo: 'MOU-001',   // Manteve o código original
-        valor: 180.00        // Enviou o novo valor
-      });
+      expect(api.put).toHaveBeenCalledWith('v1/produtos/99/', expect.any(FormData));
+      const formDataEnviado = api.put.mock.calls[0][1];
+      expect(formDataEnviado.get('nome')).toBe('Mouse Gamer');
+      expect(formDataEnviado.get('codigo')).toBe('MOU-001');
+      expect(formDataEnviado.get('valor')).toBe('180');
+      expect(formDataEnviado.get('imagem').name).toBe('teclado-lindo.png');
       expect(mockNavigate).toHaveBeenCalledWith('/produtos');
     });
   });

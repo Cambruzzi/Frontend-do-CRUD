@@ -19,8 +19,8 @@ vi.mock('react-router-dom', async () => {
 
 describe('Tela de Listagem de Produtos', () => {
   const produtosMock = [
-    { id: 1, nome: 'Teclado Mecânico', codigo: 'TEC-001', valor: 350.00 },
-    { id: 2, nome: 'Mouse Gamer', codigo: 'MOU-001', valor: 150.00 }
+    { id: 1, nome: 'Teclado Mecânico', codigo: 'TEC-001', valor: 350.00, imagem: 'http://link-falso.com/teclado.jpg' },
+    { id: 2, nome: 'Mouse Gamer', codigo: 'MOU-001', valor: 150.00, imagem: null }
   ];
 
   beforeEach(() => {
