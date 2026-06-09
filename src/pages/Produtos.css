@@ -164,3 +164,26 @@
   justify-content: center;
   font-size: 24px;
 }
+
+.produto-acoes {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-acao {
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  border: 1px solid var(--verde-neon);
+  color: var(--verde-neon);
+}
+
+.btn-excluir {
+  border: 1px solid var(--vermelho-erro, #ff4d4d);
+  color: var(--vermelho-erro, #ff4d4d);
+}

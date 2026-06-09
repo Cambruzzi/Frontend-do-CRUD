@@ -1,8 +1,12 @@
 import axios from 'axios';
+
+/**
+ * Instância global do Axios.
+ * A baseURL agora aponta para a variável de ambiente. 
+ */
 const api = axios.create({
-    baseURL: 'https://leocambruzzi.pythonanywhere.com/api/', 
-    timeout: 10000,
-    });
+  baseURL: `${import.meta.env.VITE_URL_BACKEND}/api/`,
+});
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');

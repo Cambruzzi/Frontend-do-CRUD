@@ -33,10 +33,14 @@ describe('Tela de Cadastro/Edição de Produto', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    sessionStorage.clear(); // Limpa o cofre do navegador antes de cada cenário
-    mockParams = {};        // Reseta para o modo "Novo Produto" por padrão
+    sessionStorage.clear();
+    mockParams = {};
     mockLocationState = null;
     window.URL.createObjectURL = vi.fn().mockReturnValue('blob:http://localhost:5173/imagem-falsa');
+    vi.stubEnv('VITE_URL_BACKEND', 'http://localhost:8000');
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   // --- CENÁRIO 1: MODO CRIAÇÃO (POST) ---

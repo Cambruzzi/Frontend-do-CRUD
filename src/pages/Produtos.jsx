@@ -1,129 +1,41 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
-import { ThemeToggle } from '../components/ThemeToggle';
-import './Produtos.css'; // Importação do arquivo de estilos separado
+import { HeaderDashboard } from '../components/HeaderDashboard';
+import { FeedbackMensagem } from '../components/FeedbackMensagem';
+import { ProdutosGrid } from '../components/ProdutosGrid';
+import { useProdutos } from '../hooks/useProdutos'; // <-- Importamos o nosso Hook!
+import './Produtos.css'; 
 
-/**
- * Componente responsável por listar os produtos cadastrados no sistema.
- * Realiza uma busca automática (GET) na API assim que a tela é montada,
- * trata estados de carregamento, erros de conexão e integra com o tema global.
- * * @returns {JSX.Element} A tela de listagem de produtos
- */
+const URL_BACKEND = import.meta.env.VITE_URL_BACKEND;
+
 export function Produtos() {
-  const [produtos, setProdutos] = useState([]);
-  const [carregando, setCarregando] = useState(true);
-  const [erro, setErro] = useState('');
   const navigate = useNavigate();
-  const URL_BACKEND = 'https://leocambruzzi.pythonanywhere.com/';
-
-  useEffect(() => {
-    /**
-     * Executa a chamada assíncrona para buscar a lista de produtos no Django.
-     */
-    const buscaProdutos = async () => {
-      try { 
-        const resposta = await api.get('v1/produtos/');
-        setProdutos(resposta.data);
-      } catch (error) {
-        console.error('Erro ao buscar produtos:', error);
-        setErro('Não foi possível carregar os produtos. Tente novamente mais tarde.');
-      } finally {
-        setCarregando(false);
-      }
-    };
-
-    buscaProdutos();
-  }, []);
-
-  const deletarProduto = async (id, nome) => {
-    const confirmacao = window.confirm(`Tem certeza que deseja excluir o produto "${nome}"? Esta ação não pode ser desfeita.`);
-    if (!confirmacao) return; 
-    try {
-      await api.delete(`v1/produtos/${id}/`);
-      setProdutos((listaAtual) => listaAtual.filter((produto) => produto.id !== id));
-    } catch (error) {
-      console.error('Erro ao deletar produto:', error);
-      alert('Ocorreu um erro ao tentar excluir o produto. Tente novamente.');
-    }
-  };
+  
+  // A tela simplesmente "pede" os dados e as funções prontas para o Hook
+  const { produtos, carregando, erro, deletarProduto } = useProdutos();
 
   return (
     <div className="produtos-container">
-      <header className="produtos-header">
-        <button 
-          className="btn-novo-produto" 
-          onClick={() => navigate('/novo-produto')}
-        >
+      
+      <HeaderDashboard titulo="Meus Produtos">
+        <button className="btn-novo-produto" onClick={() => navigate('/novo-produto')}>
           + Novo Produto
         </button>
-        
-        <h2>Meus Produtos</h2>
-        
-        <div className="header-acoes">
-          <ThemeToggle />
-          <button 
-            className="btn-sair" 
-            onClick={() => {
-              localStorage.removeItem('token');
-              window.location.href = '/login';
-            }}
-          >
-            Sair
-          </button>
-        </div>
-      </header>
+      </HeaderDashboard>
 
-      {carregando && <p className="status-mensagem">Carregando dados do servidor...</p>}
-
-      {erro && <p className="mensagem-erro">{erro}</p>}
-
+      {carregando && <FeedbackMensagem tipo="carregando" texto="Carregando dados do servidor..." />}
+      {erro && <FeedbackMensagem tipo="erro" texto={erro} />}
       {!carregando && produtos.length === 0 && !erro && (
-        <p className="status-mensagem">Nenhum produto cadastrado ainda.</p>
+        <FeedbackMensagem tipo="vazio" texto="Nenhum produto cadastrado ainda." />
       )}
-      <div className="produtos-grid">
-        {produtos.map((produto) => (
-          <div key={produto.id} className="produto-card">
-            <div className="produto-imagem-container">
-                  {produto.imagem ? (
-                    <img 
-                      src={`${URL_BACKEND}${produto.imagem}`}
-                      alt={`Foto do produto ${produto.nome}`} 
-                      className="produto-thumbnail"
-                    />
-                  ) : (
-                    <div className="produto-imagem-placeholder" title="Sem imagem">
-                      📦
-                    </div>
-                  )}
-              </div>
-            <div className="produto-info">
-              <strong className="produto-nome">{produto.nome}</strong>
-              <span className="produto-codigo">Código: {produto.codigo}</span>
-            </div>
-            <div className="produto-acoes" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <strong className="produto-preco">
-                R$ {produto.valor}
-              </strong>
-              <button 
-                onClick={() => navigate(`/editar-produto/${produto.id}`, { state: { produtoNaMala: produto } })}
-                style={{ background: 'transparent', border: '1px solid var(--verde-neon)', color: 'var(--verde-neon)', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
-              >
-                ✏️ Editar
-              </button>
-              <button 
-                onClick={() => deletarProduto(produto.id, produto.nome)}
-                aria-label={`Excluir ${produto.nome}`}
-                style={{ background: 'transparent', border: '1px solid var(--vermelho-erro)', color: 'var(--vermelho-erro)', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
-              >
-                🗑️ Excluir
-              </button> 
-            </div>
- 
-          </div>
-        ))}
-      </div>
 
+      {!carregando && produtos.length > 0 && (
+        <ProdutosGrid 
+          produtos={produtos} 
+          onDeletar={deletarProduto} 
+          urlBackend={URL_BACKEND} 
+        />
+      )}
+      
     </div>
   );
 }

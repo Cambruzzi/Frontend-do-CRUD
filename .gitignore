@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# .env.example
+VITE_URL_BACKEND=http://localhost:8000/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
