@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { HeaderDashboard } from '../components/HeaderDashboard';
-import { FeedbackMensagem } from '../components/FeedbackMensagem';
-import { ProdutosGrid } from '../components/ProdutosGrid';
-import { useProdutos } from '../hooks/useProdutos'; // <-- Importamos o nosso Hook!
+import { HeaderDashboard } from '../../components/HeaderDashboard';
+import { FeedbackMensagem } from '../../components/FeedbackMensagem';
+import { ProdutosGrid } from '../../components/ProdutosGrid';
+import { useProdutos } from '../../hooks/useProdutos'; // <-- Importamos o nosso Hook!
 import './Produtos.css'; 
 
 const URL_BACKEND = import.meta.env.VITE_URL_BACKEND;

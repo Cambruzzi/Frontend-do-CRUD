@@ -15,7 +15,6 @@ export function RenderizadorCampos({ campos, valores, onChange, disabled }) {
           type={campo.type}
           step={campo.step}
           placeholder={campo.placeholder}
-          // Pega o valor exato deste campo de dentro do objeto formData
           value={valores[campo.name]} 
           onChange={onChange}
           disabled={disabled}

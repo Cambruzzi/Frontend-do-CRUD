@@ -7,9 +7,7 @@ export function UploadImagemPreview({ imagemPreview, aoMudarImagem }) {
 
   const obterCaminhoPreview = () => {
     if (!imagemPreview) return null;
-    // Se a imagem for recém-escolhida (temporária na memória), ela começa com 'blob:'
     if (imagemPreview.startsWith('blob:')) return imagemPreview;
-    // Se veio do banco de dados, juntamos com a URL global
     return `${URL_BACKEND}${imagemPreview}`;
   };
 

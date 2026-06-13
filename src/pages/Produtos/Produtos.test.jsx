@@ -2,11 +2,11 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 import { Produtos } from './Produtos';
-import api from '../services/api';
+import api from '../../services/api';
 
-vi.mock('../services/api');
+vi.mock('../../services/api');
 
 const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
@@ -114,11 +114,11 @@ describe('Tela de Listagem de Produtos', () => {
   // --- CENÁRIO 4: FALHA NA API DURANTE A EXCLUSÃO ---
   it('deve mostrar um alerta de erro se o servidor falhar ao deletar', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {}); // Espião pro alert de erro
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
     const usuario = userEvent.setup();
     api.get.mockResolvedValueOnce({ data: produtosMock });
         api.delete.mockRejectedValueOnce(new Error('Erro interno'));
-    vi.spyOn(window, 'confirm').mockReturnValue(true); // O usuário confirma
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     render(
       <ThemeProvider>

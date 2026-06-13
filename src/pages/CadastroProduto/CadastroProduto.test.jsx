@@ -2,9 +2,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 import { CadastroProduto } from './CadastroProduto';
-import api from '../services/api';
+import api from '../../services/api';
 
 /**
  * Suíte de Testes: Cadastro e Edição de Produtos (CRUD)
@@ -13,7 +13,7 @@ import api from '../services/api';
  */
 
 // 1. INFRAESTRUTURA DE MOCKS DINÂMICOS
-vi.mock('../services/api');
+vi.mock('../../services/api');
 
 const mockNavigate = vi.fn();
 let mockParams = {}; 

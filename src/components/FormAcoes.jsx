@@ -1,3 +1,4 @@
+import { BotaoPrimario } from './BotaoPrimario';
 /**
  * Componente padronizado para botões de submissão de formulários.
  * Garante que todos os formulários do sistema tenham o mesmo visual
@@ -6,13 +7,11 @@
 export function FormAcoes({ carregando, onCancelar, textoSalvar = 'Salvar' }) {
   return (
     <div className="form-acoes">
-      <button 
-        type="submit" 
-        disabled={carregando} 
-        className="btn-primario"
-      >
-        {carregando ? 'Salvando...' : textoSalvar}
-      </button>
+      <BotaoPrimario 
+        carregando={carregando}
+        texto={textoSalvar}
+        textoCarregando="Salvando..."
+      />
       
       <button 
         type="button" 

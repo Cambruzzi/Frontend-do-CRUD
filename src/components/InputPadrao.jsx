@@ -13,7 +13,7 @@ export function InputPadrao({
   required = true 
 }) {
   return (
-    <div className="input-container" style={{ width: '100%', marginBottom: '10px' }}>
+    <div className="input-container">
       <input
         name={name}
         type={type}

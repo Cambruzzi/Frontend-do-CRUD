@@ -1,11 +1,11 @@
-import { ThemeToggle } from '../components/ThemeToggle';
-import { UploadImagemPreview } from '../components/UploadImagemPreview';
-import { FeedbackMensagem } from '../components/FeedbackMensagem';
-import { RenderizadorCampos } from '../components/RenderizadorCampos';
-import { FormAcoes } from '../components/FormAcoes'; // <-- 1. Importamos o nosso novo componente
-import { useCadastroProduto } from '../hooks/useCadastroProduto';
-import { CAMPOS_PRODUTO } from '../utils/formularios'; 
-import './Login.css'; 
+import { ThemeToggle } from '../../components/ThemeToggle';
+import { UploadImagemPreview } from '../../components/UploadImagemPreview';
+import { FeedbackMensagem } from '../../components/FeedbackMensagem';
+import { RenderizadorCampos } from '../../components/RenderizadorCampos';
+import { FormAcoes } from '../../components/FormAcoes'; // <-- 1. Importamos o nosso novo componente
+import { useCadastroProduto } from '../../hooks/useCadastroProduto';
+import { CAMPOS_PRODUTO } from '../../utils/formularios'; 
+import '../../styles/layout-formulario.css'; 
 
 export function CadastroProduto() {
   const {
