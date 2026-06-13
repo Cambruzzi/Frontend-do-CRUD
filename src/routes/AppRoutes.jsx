@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Login } from '../pages/Login';
-import { CadastroUsuario } from '../pages/CadastroUsuario';
-import { Produtos } from '../pages/Produtos';
-import { CadastroProduto } from '../pages/CadastroProduto';
+import { Login } from '../pages/Login/Login';
+import { CadastroUsuario } from '../pages/CadastroUsuario/CadastroUsuario';
+import { Produtos } from '../pages/Produtos/Produtos';
+import { CadastroProduto } from '../pages/CadastroProduto/CadastroProduto';
 
 /**
  * Componente de Guard Route
