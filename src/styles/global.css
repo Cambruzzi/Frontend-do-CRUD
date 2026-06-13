@@ -9,6 +9,20 @@
   --input-bg: #3d2954;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1280px; margin: 0 auto;
+  background-color: var(--bg-principal);
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
 .tema-claro {
   --bg-principal: #f4f5f7;
   --bg-card: #ffffff;

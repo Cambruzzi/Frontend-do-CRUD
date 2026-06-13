@@ -4,6 +4,7 @@
   padding: 40px 20px;
   font-family: 'Segoe UI', Roboto, sans-serif;
 }
+
 .app-container {
   min-height: 100vh; 
   background-color: var(--bg-principal);
@@ -60,8 +61,8 @@
 }
 
 .btn-sair:hover {
-  border-color: #ff6b6b;
-  color: #ff6b6b;
+  border-color: var(--vermelho-erro);
+  color: var(--vermelho-erro);
 }
 
 .produtos-grid {
@@ -79,8 +80,10 @@
   align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-left: 4px solid var(--verde-neon); 
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+  gap: 15px;
 }
+
 .produto-card:hover {
   transform: scale(1.01);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
@@ -118,7 +121,6 @@
   font-weight: bold;
 }
 
-/* 5. MENSAGENS DE STATUS */
 .status-mensagem {
   color: var(--texto-secundario);
   text-align: center;
@@ -126,28 +128,11 @@
   font-size: 16px;
 }
 
-.mensagem-erro {
-  color: #ff6b6b;
-  background-color: rgba(255, 107, 107, 0.1);
-  padding: 15px;
-  border-radius: 6px;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Estrutura flexível para alinhar a imagem ao lado do texto */
-.produto-card {
-  display: flex;
-  align-items: center;
-  gap: 15px; /* Espaço entre a imagem e as informações */
-  /* Mantenha as suas outras propriedades de borda, padding, etc... */
-}
-
 /* O Estilo da Imagem Real */
 .produto-thumbnail {
   width: 60px;
   height: 60px;
-  object-fit: cover; /* Mágica: corta a imagem sem achatar! */
+  object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--texto-secundario);
 }
@@ -156,7 +141,7 @@
 .produto-imagem-placeholder {
   width: 60px;
   height: 60px;
-  background-color: rgba(255, 255, 255, 0.05); /* Fundo sutil */
+  background-color: var(--input-bg);
   border: 1px dashed var(--texto-secundario);
   border-radius: 8px;
   display: flex;
@@ -184,6 +169,48 @@
 }
 
 .btn-excluir {
-  border: 1px solid var(--vermelho-erro, #ff4d4d);
-  color: var(--vermelho-erro, #ff4d4d);
+  border: 1px solid var(--vermelho-erro);
+  color: var(--vermelho-erro);
+}
+
+@media (max-width: 768px) {
+  .produtos-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-acoes {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .produto-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .produto-info {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .produto-preco-wrapper {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--input-bg);
+    padding-top: 15px;
+    margin-top: 5px;
+  }
+
+  .produto-acoes {
+    width: auto;
+  }
 }
