@@ -1,12 +1,12 @@
 # 📦 Dashboard de Gestão de Produtos
 
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![Testing-Library](https://img.shields.io/badge/-TestingLibrary-%23E33332?style=for-the-badge&logo=testing-library&logoColor=white)
-![Vitest](https://img.shields.io/badge/-Vitest-252529?style=for-the-badge&logo=vitest&logoColor=FCC72B)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 Uma aplicação Front-end moderna e responsiva para gestão e cadastro de produtos (CRUD completo), construída com React e Vite. Este projeto foca em **Experiência do Usuário (UX)**, **Performance** e **Cobertura de Testes Automatizados**.
+
+🌐 **Acesse a aplicação em produção:** [frontend-do-crud-68ke.vercel.app](https://frontend-do-crud-68ke.vercel.app/)
 
 ---
 
@@ -20,7 +20,9 @@ Este projeto é a interface de usuário (Client-side) que consome uma API RESTfu
 
 Além do tradicional CRUD, este projeto implementa padrões avançados de mercado:
 
+
 * **🔐 Autenticação Protegida:** Rotas privadas e controle de acesso integrado com a API.
+* **🛡️Rotas Protegidas:** Controle de acesso no Front-end (Guards) garantindo que apenas usuários autenticados acessem o dashboard.
 * **🌓 Theme Toggle:** Suporte nativo para transição fluida entre Dark Mode e Light Mode.
 * **🛡️ Resiliência de Estado (F5 Fallback):** Uso estratégico do `sessionStorage` para evitar perda de dados e chamadas redundantes à API durante a edição de produtos caso o usuário atualize a página.
 * **⚡ Atualizações Otimistas (Optimistic UI):** Exclusões de itens refletem instantaneamente na interface usando filtros de estado, melhorando a percepção de velocidade do sistema sem aguardar o *refetch* do servidor.
